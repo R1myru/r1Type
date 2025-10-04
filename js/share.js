@@ -88,54 +88,12 @@ async function shareResults({ speed, wpm, accuracy, elapsedSeconds }) {
     timeLabel: humanizeTime(elapsedSeconds)
   };
 
-  const shareText = formatShareText(sharePayload);
-  const shareUrl = `https://t.me/share/url?${new URLSearchParams({ text: shareText })}`;
-
-  let blob = null;
-
-  if (navigator.share) {
-    try {
-      blob = blob || (await createShareImage(sharePayload)).blob;
-      const file = new File([blob], 'r1type-result.png', { type: 'image/png' });
-      if (!navigator.canShare || navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: 'r1Type результат',
-          text: shareText,
-          files: [file]
-        });
-        return { method: 'native', text: shareText };
-      }
-    } catch (error) {
-      console.warn('Native share failed, using fallback', error);
-    }
-  }
-
-  const shareWindow = window.open('about:blank', '_blank', 'noopener');
-  if (shareWindow) {
-    shareWindow.location = shareUrl;
-  }
-
-  let clipboardSuccess = false;
-  if (navigator.clipboard?.writeText) {
-    try {
-      await navigator.clipboard.writeText(shareText);
-      clipboardSuccess = true;
-    } catch (error) {
-      clipboardSuccess = false;
-    }
-  }
-
-  if (!blob) {
-    blob = (await createShareImage(sharePayload)).blob;
-  }
-
+  const { blob } = await createShareImage(sharePayload);
   downloadBlob(blob, 'r1type-result.png');
 
   return {
-    method: 'fallback',
-    text: shareText,
-    opened: !!shareWindow,
-    clipboard: clipboardSuccess
+    method: 'download',
+    text: formatShareText(sharePayload)
   };
 }
 

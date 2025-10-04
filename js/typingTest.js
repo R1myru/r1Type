@@ -474,22 +474,11 @@ class TypingTest {
         shareOutcome = await shareResultsFn(this.lastResults);
       }
 
-      if (shareOutcome?.method === 'native') {
+      if (shareOutcome?.method === 'download') {
+        const suffix = shareOutcome.text ? ` Текст для подписи: ${shareOutcome.text}` : '';
+        this.setShareStatus(`Картинка скачана на устройство.${suffix}`);
+      } else if (shareOutcome?.method === 'native') {
         this.setShareStatus('Поделились через системное меню.');
-      } else if (shareOutcome) {
-        const parts = [];
-        if (shareOutcome.opened) {
-          parts.push('Открыл Telegram в новой вкладке.');
-        } else {
-          parts.push('Не удалось автоматически открыть Telegram.');
-        }
-        if (shareOutcome.clipboard) {
-          parts.push('Текст уже в буфере обмена.');
-        } else if (shareOutcome.text) {
-          parts.push(`Скопируй текст вручную: ${shareOutcome.text}`);
-        }
-        parts.push('Картинка скачана на устройство.');
-        this.setShareStatus(parts.join(' '));
       } else {
         this.setShareStatus('Функция шаринга недоступна.');
       }
