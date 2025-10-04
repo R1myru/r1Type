@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>r1Type — тест скорости печати</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">⚡ r1Type</div>
+        <div class="controls">
+          <div class="control-group">
+            <label for="timeSelect">Время</label>
+            <select id="timeSelect">
+              <option value="60">1 мин</option>
+              <option value="120">2 мин</option>
+              <option value="300">5 мин</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="languageSelect">Язык</label>
+            <select id="languageSelect">
+              <option value="ru">Русский</option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="uk">Українська</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="center">
+      <section class="typer-container">
+        <div id="activeTest" class="active-test">
+          <div id="typer" class="typer">
+            <div id="typerContent" class="typer-content"></div>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+
+          <div class="timer">
+            <span class="timer-icon">⏱️</span>
+            <span id="timer">01:00</span>
+          </div>
+
+          <div class="instructions">
+            <p>
+              ⚠️ <strong>Важно:</strong> Использование клавиши Backspace запрещено.
+              Ошибки подсвечиваются красным до исправления.
+            </p>
+          </div>
+        </div>
+
+        <input
+          type="text"
+          id="input"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          style="position: absolute; left: -9999px; opacity: 0"
+        />
+
+        <div id="resultsSection" class="hidden">
+          <div class="stats" id="stats">
+            <div class="statbox cpm">
+              <div class="statbox-title">⚡ Скорость</div>
+              <div class="statbox-value" id="speed">0</div>
+              <div class="statbox-unit" id="speedUnit">зн./мин</div>
+            </div>
+            <div class="statbox wpm">
+              <div class="statbox-title">📝 Слова</div>
+              <div class="statbox-value" id="wpm">0</div>
+              <div class="statbox-unit">сл./мин</div>
+            </div>
+            <div class="statbox accuracy">
+              <div class="statbox-title">🎯 Точность</div>
+              <div class="statbox-value" id="accuracy">0%</div>
+            </div>
+          </div>
+
+          <div class="certificate hidden" id="certificate">
+            <div class="certificate-icon" id="certIcon">🏆</div>
+            <div class="certificate-title">Поздравляем!</div>
+            <div class="certificate-level" id="certLevel">
+              Вы получили сертификат
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button id="restart" class="btn-primary">🔄 Начать заново</button>
+            <button id="share" class="btn-secondary">📤 Поделиться в Telegram</button>
+          </div>
+          <div id="shareStatus" class="share-status hidden"></div>
+        </div>
+      </section>
+    </main>
+
+    <script defer src="js/texts.js"></script>
+    <script defer src="js/certificates.js"></script>
+    <script defer src="js/share.js"></script>
+    <script defer src="js/typingTest.js"></script>
+    <script defer src="js/main.js"></script>
+  </body>
+</html>
