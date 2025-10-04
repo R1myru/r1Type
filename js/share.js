@@ -37,7 +37,7 @@ function drawShareImage(context, stats) {
   context.fillStyle = 'rgba(255,255,255,0.3)';
   context.font = '26px "Segoe UI", sans-serif';
   context.textAlign = 'right';
-  context.fillText('Проверь свою скорость на r1my.ru/type', SHARE_IMAGE_WIDTH - 80, SHARE_IMAGE_HEIGHT - 80);
+  context.fillText('Проверь свою скорость на type.r1my.ru', SHARE_IMAGE_WIDTH - 80, SHARE_IMAGE_HEIGHT - 80);
 }
 
 async function canvasToBlob(canvas) {
