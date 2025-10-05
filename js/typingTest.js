@@ -142,7 +142,11 @@ class TypingTest {
 
   focusInput() {
     if (document.activeElement !== this.input) {
-      this.input.focus();
+      try {
+        this.input.focus({ preventScroll: true });
+      } catch (error) {
+        this.input.focus();
+      }
     }
   }
 

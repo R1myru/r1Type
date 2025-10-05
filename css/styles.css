@@ -64,6 +64,22 @@ input {
   transition: border-color 0.3s, background 0.3s;
 }
 
+.hidden-input {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  font-size: 16px;
+}
+
 select option {
   color: #302F2C;
   background: #F3F3F3;
