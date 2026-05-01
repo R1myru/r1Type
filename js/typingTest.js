@@ -32,7 +32,6 @@ class TypingTest {
     this.clickBuffer = null;
     this.clickBufferPromise = null;
     this.fallbackClickSounds = this.createFallbackClickSounds();
-    this.clickBufferPromise = this.loadClickBuffer();
 
     this.initializeElements();
     this.attachEventListeners();
@@ -73,7 +72,7 @@ class TypingTest {
     });
   }
 
-  playClick() {
+  async playClick() {
     if (this.getEffectiveSoundVolume() <= 0) {
       return;
     }
@@ -81,18 +80,22 @@ class TypingTest {
     const context = this.getAudioContext();
 
     if (context) {
-      if (context.state === 'suspended') {
-        context.resume().catch(() => {});
-      }
+      try {
+        if (context.state === 'suspended') {
+          await context.resume();
+        }
 
-      if (!this.clickBufferPromise) {
-        this.clickBufferPromise = this.loadClickBuffer();
-      }
+        if (!this.clickBufferPromise) {
+          this.clickBufferPromise = this.loadClickBuffer();
+        }
 
-      if (this.clickBuffer) {
-        this.playBufferedClick(context);
-      } else {
-        this.playGeneratedClick(context);
+        if (this.clickBuffer) {
+          this.playBufferedClick(context);
+        } else {
+          this.playGeneratedClick(context);
+        }
+      } catch (error) {
+        this.playFallbackClick();
       }
 
       return;
@@ -181,6 +184,9 @@ class TypingTest {
     try {
       const context = this.getAudioContext();
       const response = await fetch(this.clickSoundUrl);
+      if (!context || !response.ok) {
+        return;
+      }
       const arrayBuffer = await response.arrayBuffer();
       this.clickBuffer = await context.decodeAudioData(arrayBuffer);
     } catch (error) {
@@ -280,8 +286,14 @@ class TypingTest {
       this.resetTest();
     });
 
-    this.soundToggle.addEventListener('click', () => this.toggleSound());
-    this.soundVolumeInput.addEventListener('input', (event) => this.setSoundVolume(event.target.value));
+    if (this.soundToggle) {
+      this.soundToggle.addEventListener('click', () => this.toggleSound());
+    }
+
+    if (this.soundVolumeInput) {
+      this.soundVolumeInput.addEventListener('input', (event) => this.setSoundVolume(event.target.value));
+      this.soundVolumeInput.addEventListener('change', (event) => this.setSoundVolume(event.target.value));
+    }
 
     window.addEventListener('resize', () => this.updateMetrics());
 
