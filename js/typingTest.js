@@ -6,11 +6,8 @@ const CERTIFICATE_LEVELS = r1TypeNamespace.certificateLevels || {};
 const shareResultsFn = r1TypeNamespace.share?.shareResults;
 
 class TypingTest {
-  constructor()     
-    this.initializeElements();
+  constructor() {
     this.currentLanguage = 'ru';
-    this.clickSound = new Audio('/sounds/click.mp3');
-    this.clickSound.volume = 0.5; 
     this.currentTime = 60;
     this.sampleText = '';
     this.timer = null;
@@ -26,10 +23,25 @@ class TypingTest {
     this.viewportHeight = 0;
     this.lastResults = null;
 
+    // --- ИНТЕГРАЦИЯ ЗВУКА ---
+    this.clickSound = new Audio('/sounds/clicks.mp3');
+    this.clickSound.volume = 0.5; // Громкость 50%
+    // ------------------------
+
     this.initializeElements();
     this.attachEventListeners();
     this.loadText();
     this.resetTest();
+  }
+
+  // МЕТОД ДЛЯ ВОСПРОИЗВЕДЕНИЯ
+  playClick() {
+    if (this.clickSound) {
+      this.clickSound.currentTime = 0; // Сброс в начало для быстрой печати
+      this.clickSound.play().catch(() => {
+        // Игнорируем блокировку автоплея браузером
+      });
+    }
   }
 
   initializeElements() {
@@ -180,6 +192,9 @@ class TypingTest {
       const actual = value[index];
 
       if (actual === expected) {
+        // --- ВЫЗОВ ЗВУКА ПРИ ПРАВИЛЬНОМ НАЖАТИИ ---
+        this.playClick();
+        // -----------------------------------------
         this.pos += 1;
       } else {
         this.errors += 1;
