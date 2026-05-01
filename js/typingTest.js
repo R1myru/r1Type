@@ -6,8 +6,11 @@ const CERTIFICATE_LEVELS = r1TypeNamespace.certificateLevels || {};
 const shareResultsFn = r1TypeNamespace.share?.shareResults;
 
 class TypingTest {
-  constructor() {
+  constructor()     
+    this.initializeElements();
     this.currentLanguage = 'ru';
+    this.clickSound = new Audio('/sounds/click.mp3');
+    this.clickSound.volume = 0.5; 
     this.currentTime = 60;
     this.sampleText = '';
     this.timer = null;
