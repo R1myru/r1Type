@@ -55,11 +55,6 @@ function downloadBlob(blob, filename) {
   URL.revokeObjectURL(objectUrl);
 }
 
-function formatShareText({ speed, wpm, accuracy }) {
-  const accuracyStr = accuracy.toFixed(1).replace('.', ',');
-  return `Ахуеть, я печатаю со скоростью ${speed} зн./мин (${wpm} сл./мин) с точностью ${accuracyStr}% в r1Type!`;
-}
-
 function humanizeTime(seconds) {
   if (seconds >= 60) {
     const minutes = Math.round(seconds / 60);
